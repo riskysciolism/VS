@@ -23,6 +23,7 @@ public class Receiver {
         byte[] buffer = new byte[BUFFER_SIZE];
         DatagramPacket dp = new DatagramPacket(buffer, buffer.length);
         try {
+            System.out.println("Listening..");
             while (true) {
                 this.socket.receive(dp);
                 System.out.println(new String(dp.getData(), StandardCharsets.UTF_8));

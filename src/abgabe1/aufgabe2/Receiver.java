@@ -1,4 +1,4 @@
-package aufgabe2;
+package abgabe1.aufgabe2;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

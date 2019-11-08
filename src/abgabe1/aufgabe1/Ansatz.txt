@@ -1,0 +1,32 @@
+# Aufgabe 1
+> Sie sollen ein Experiment aufbauen, mit Sie den Paketverlust zwischen je einem bestimmten selbstgewählten Sender und Empfänger analysieren können. Dabei soll der Anteil der in einem bestimmten, selbstgewähltem Zeitraum verlorengegangenen Datagramme protokolliert werden und in wievielen der empfangenen Pakete die Nutzdaten zwischen Sender und Empfänger verfälscht wurden (z.B. aufgrund von Übertragungsfehlern).
+
+## Ansatz a)
+Der Client schickt dem Server über den eingestellten Zeitraum wiederholt Pakete, die jedes Bit der Nutzdaten auf 0
+gesetzt haben. Der Server überprüft ob bei Empfang immer noch alle bits auf 0 stehen. Nach Ablauf der Zeit schickt der
+Client ein "Ende" Paket, das die Anzahl gesendeter Pakete enthält und basierend darauf gibt der Client die Ergebnisse
+des Experiments aus.
+
+## Protokoll c)
+| | |
+| - | - |
+| Datum/Uhrzeit Beginn und Ende des Experiments | 27.10.19, 13:55 bis 27.10.19, 13:58 |
+| | |
+| Beschreibung des Netzwerkes und Anschlusses beider Rechner | Laptop über WLAN, Desktop PC über LAN. Selbes Netzwerk. |
+| | |
+| IP-Adressen der beteiligten Rechner | 192.168.0.102/24 192.168.0.38/24 |
+| | |
+| Beschreibung der Nutzdaten (insbesondere Größe) | Während Test: 508 Bytes, alle Bits auf 0 <br> "Ende" Paket: Anzahl der gesendeten Pakete als String, daher abhängig von der Anzahl |
+| | |
+| Anzahl gesendete Pakete | 17482 |
+| | |
+| Anzahl empfangener Pakete, Anteil der gesendeten Pakete (%) | 17380, 99.48% |
+| | |
+| Anzahl empfangener Pakete, deren Nutzdaten fehlerhaft waren, Anteil der empfangenen Pakete (%) | 0, 0% |
+
+## Ansatz d)
+Um die Latenz zu bestimmen kann der Server ein Paket mit einem Timestamp sowie einer Prüfsumme für diesen Timestamp an
+den Client schicken, wenn gewünscht auch mehrfach um einen Durchschnitt zu errechnen. Um den Durchsatz zu bestimmen
+könnten solche Pakete beispielsweise in schnellstmöglicher Abfolge geschickt werden, der Client kann anhand des ersten
+Timestamps einen Zeitraum wählen in dem er auf Pakete hört und anschließend (anhand der Timestamps und Paketgröße)
+auswerten wie groß der Durchsatz ist.

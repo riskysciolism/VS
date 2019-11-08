@@ -5,12 +5,17 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * Analyses the package loss and corrupted data between a sender and receiver using the UDP protocol.
+ * Analyses the package loss and corrupted data between a sender and receiver
+ * using the UDP protocol.
+ *
+ * The server awaits a connection from the client. He then counts and validates
+ * incoming packets until the client signals to end the test (this signalling
+ * message includes the number of packets send from the client). Afterwards the
+ * server prints the results.
  */
 public class Loss {
     public static void main(String[] args) {
@@ -75,7 +80,7 @@ class LossServer {
 
     public void start() {
         try (DatagramSocket socket = new DatagramSocket(PORT)) {
-            socket.setSoTimeout(0); // TODO Useful value
+            socket.setSoTimeout(0);
             // The value we expect to receive from the client - all zeros - otherwise the packet got corrupted
             final byte[] byteArrayAllZeros = new byte[508];
 

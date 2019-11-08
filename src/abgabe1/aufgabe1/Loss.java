@@ -1,4 +1,4 @@
-package one;
+package abgabe1.aufgabe1;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -14,12 +14,9 @@ import java.util.Scanner;
  */
 public class Loss {
     public static void main(String[] args) {
-        String selection = "";
-        if (args.length == 0) {
-            System.out.println("Selection (\"client\" / \"server\")");
-            System.out.print(">> ");
-            selection = new Scanner(System.in).nextLine();
-        }
+        System.out.println("Selection (\"client\" / \"server\")");
+        System.out.print(">> ");
+        String selection = new Scanner(System.in).nextLine();
 
         if (selection.equals("server")) {
             new LossServer().start();
@@ -30,29 +27,29 @@ public class Loss {
 }
 
 class LossClient {
-    private static final int PORT_CLIENT = 8081;
-    private static final int BUFSIZE = 508;
     private static final String IP_SERVER = "192.168.0.38";
-    private static final int PORT_SERVER = 8080;
+    private static final int PORT_SERVER  = 8080;
+    private static final int PORT_CLIENT  = 8081;
+    private static final int BUFSIZE      = 508;
 
     public void start() {
         System.out.print("How long should the test run (seconds): ");
-        long timeframe = Integer.parseInt(new Scanner(System.in).nextLine()) * 1000;
+        long testDurationMs = Integer.parseInt(new Scanner(System.in).nextLine()) * 1000;
 
         try (DatagramSocket socket = new DatagramSocket(PORT_CLIENT)) {
             InetAddress addressServer = InetAddress.getByName(IP_SERVER);
-            DatagramPacket packageOut;
+            DatagramPacket packetOut;
 
             System.out.println("Client starting ...");
-            int packagesSend = 0;
+            int packetCount = 0;
             long startTime = System.currentTimeMillis();
 
-            while (System.currentTimeMillis() < startTime + timeframe) {
-                packageOut = new DatagramPacket(new byte[BUFSIZE], BUFSIZE, addressServer, PORT_SERVER);
-                socket.send(packageOut);
-                packagesSend += 1;
+            while (System.currentTimeMillis() < startTime + testDurationMs) {
+                packetOut = new DatagramPacket(new byte[BUFSIZE], BUFSIZE, addressServer, PORT_SERVER);
+                socket.send(packetOut);
+                packetCount += 1;
 
-                if (packagesSend % 100 == 0) System.out.println("Packages send: " + packagesSend);
+                if (packetCount % 100 == 0) System.out.println("Packages send: " + packetCount);
 
                 try {
                     Thread.sleep(10);
@@ -61,9 +58,9 @@ class LossClient {
                 }
             }
 
-            byte[] data = Integer.toString(packagesSend).getBytes();
-            packageOut = new DatagramPacket(data, data.length, addressServer, PORT_SERVER);
-            socket.send(packageOut);
+            byte[] data = Integer.toString(packetCount).getBytes();
+            packetOut = new DatagramPacket(data, data.length, addressServer, PORT_SERVER);
+            socket.send(packetOut);
         } catch (final IOException e) {
             System.err.println(e);
         }
@@ -78,25 +75,26 @@ class LossServer {
 
     public void start() {
         try (DatagramSocket socket = new DatagramSocket(PORT)) {
-            // TODO Useful value
-            socket.setSoTimeout(0);
+            socket.setSoTimeout(0); // TODO Useful value
+            // The value we expect to receive from the client - all zeros - otherwise the packet got corrupted
+            final byte[] byteArrayAllZeros = new byte[508];
 
             System.out.println("Server starting ...");
-            byte[] emptyPackage = new byte[508];
-            int packagesReceived = 0;
-            int packagesCorrupted = 0;
+            int packetsReceived = 0;
+            int packetsCorrupted = 0;
 
             while (true) {
                 DatagramPacket packetIn = new DatagramPacket(new byte[BUFSIZE], BUFSIZE);
                 socket.receive(packetIn);
-                packagesReceived += 1;
+                packetsReceived += 1;
 
-                if (packetIn.getLength() != BUFSIZE) {
-                    int packagesSend = Integer.parseInt(new String(packetIn.getData(), 0, packetIn.getLength()));
-                    System.out.println("Send / received: " + packagesReceived + " / " + packagesSend);
-                    System.out.println("Packages corrupted: " + packagesCorrupted);
-                } else if (!Arrays.equals(packetIn.getData(), emptyPackage)) {
-                    packagesCorrupted += 1;
+                boolean messageReceivedTestFinished = packetIn.getLength() != BUFSIZE;
+                if (messageReceivedTestFinished) {
+                    int packetCount = Integer.parseInt(new String(packetIn.getData(), 0, packetIn.getLength()));
+                    System.out.println("Send / received: " + packetsReceived + " / " + packetCount);
+                    System.out.println("Packages corrupted: " + packetsCorrupted);
+                } else if (!Arrays.equals(packetIn.getData(), byteArrayAllZeros)) {
+                    packetsCorrupted += 1;
                 }
             }
         } catch (SocketTimeoutException e) {

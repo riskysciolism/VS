@@ -1,4 +1,5 @@
 package abgabe1.aufgabe3;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -59,6 +60,7 @@ class UdpSender {
     /**
      * Start UDP Sender
      * Start TCP Receiver
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -99,8 +101,9 @@ class TcpReceiver {
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
             socketAddress = socket.getRemoteSocketAddress();
             System.out.println("Verbindung zu " + socketAddress + " aufgebaut");
-            String input;
-            while ((input = in.readLine()) != null) {
+            int length;
+            while ((length = in.read()) > 0) {
+                String input = in.readLine().substring(0, length);
                 System.out.println(socketAddress + ">> [" + input + "]");
                 this.sender.send(input);
             }

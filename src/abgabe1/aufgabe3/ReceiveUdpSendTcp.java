@@ -14,7 +14,7 @@ class UdpReceiver {
 
     private DatagramSocket udp_socket;
     private static final Integer UDP_SOCKET_PORT = 50000;
-    private static final Integer BUFFER_SIZE = 8;
+    private static final Integer BUFFER_SIZE = 1024;
     private static final Integer TCP_SOCKET_PORT = 8000;
     private static final String TCP_HOST = "0.0.0.0";
 
@@ -33,7 +33,7 @@ class UdpReceiver {
             System.out.println("Listening..");
             while (true) {
                 this.udp_socket.receive(dp);
-                String msg = new String(dp.getData(), StandardCharsets.UTF_8);
+                String msg = new String(dp.getData(), 0, dp.getLength());
                 System.out.println("UDP listener: " + msg);
                 tcpSender.sendMessage(msg);
             }
@@ -67,6 +67,8 @@ class TcpClient {
 
     void sendMessage(String output) {
         System.out.println(">> [" + output + "]");
+        this.outWriter.write(output.length());
         this.outWriter.println(output);
+        this.outWriter.flush();
     }
 }

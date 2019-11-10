@@ -26,8 +26,7 @@ public class Receiver {
             System.out.println("Listening..");
             while (true) {
                 this.socket.receive(dp);
-                System.out.println(new String(dp.getData(), StandardCharsets.UTF_8));
-
+                System.out.println("UDP listener: [" + new String(dp.getData(), 0, dp.getLength())+"]");
             }
         } catch (IOException e) {
             e.printStackTrace();

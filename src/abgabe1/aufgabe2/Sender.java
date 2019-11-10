@@ -1,6 +1,8 @@
 package abgabe1.aufgabe2;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,21 +42,37 @@ public class Sender {
         this.socket.send(new DatagramPacket(byteMessage, byteMessage.length, this.broadcastAddr, this.port));
     }
 
-    public void startScheduler() {
-        SimpleDateFormat formatter= new SimpleDateFormat("HH:mm:ss");
+    private void startInput() {
+        try (BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in))) {
+            while (true) {
+                System.out.print(">> ");
+                String msg = stdin.readLine();
+                if ("q".equals(msg)) {
+                    break;
+                }
+                send(msg);
+                System.out.println("Send: '" + msg + "'");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void startScheduler() {
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         final Runnable timer = () -> {
             try {
-                send(formatter.format(new Date(System.currentTimeMillis())));
-                System.out.println("Send message..");
+                String msg = formatter.format(new Date(System.currentTimeMillis()));
+                send(msg);
+                System.out.println("Send: '" + msg + "'");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         };
-        final ScheduledFuture<?> timerHandler =
-                scheduler.scheduleAtFixedRate(timer, 0, 20, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(timer, 0, 20, TimeUnit.SECONDS);
     }
 
-    public static InetAddress getBroadcastAddress() {
+    private static InetAddress getBroadcastAddress() {
         try {
             InetAddress localhost = Inet4Address.getLocalHost();
             return NetworkInterface.
@@ -70,6 +88,23 @@ public class Sender {
 
     public static void main(String[] args) {
         Sender sender = new Sender(SOCKET_PORT);
-        sender.startScheduler();
+        System.out.println("Starte Timer[0] oder eigene Eingabe[1]?");
+        System.out.print(">> ");
+        try (BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in))) {
+            String msg = stdin.readLine();
+            switch (msg){
+                case "1":
+                    System.out.println("Starte eigene Eingabe...");
+                    sender.startInput();
+                    break;
+                default:
+                    System.out.println("Falsche Eingabe.");
+                case "0":
+                    System.out.println("Starte Timer...");
+                    sender.startScheduler();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

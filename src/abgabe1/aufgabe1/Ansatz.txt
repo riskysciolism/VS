@@ -3,8 +3,8 @@
 
 ## Ansatz a)
 Der Client schickt dem Server über den eingestellten Zeitraum wiederholt Pakete, die jedes Bit der Nutzdaten auf 0
-gesetzt haben. Der Server überprüft ob bei Empfang immer noch alle bits auf 0 stehen. Nach Ablauf der Zeit schickt der
-Client ein "Ende" Paket, das die Anzahl gesendeter Pakete enthält und basierend darauf gibt der Client die Ergebnisse
+gesetzt haben. Der Server überprüft ob bei Empfang immer noch alle Bits auf 0 stehen. Nach Ablauf der Zeit schickt der
+Client ein "Ende" Paket, das die Anzahl gesendeter Pakete enthält und basierend darauf gibt der Server die Ergebnisse
 des Experiments aus.
 
 ## Protokoll c)
@@ -25,8 +25,8 @@ des Experiments aus.
 | Anzahl empfangener Pakete, deren Nutzdaten fehlerhaft waren, Anteil der empfangenen Pakete (%) | 0, 0% |
 
 ## Ansatz d)
-Um die Latenz zu bestimmen kann der Server ein Paket mit einem Timestamp sowie einer Prüfsumme für diesen Timestamp an
-den Client schicken, wenn gewünscht auch mehrfach um einen Durchschnitt zu errechnen. Um den Durchsatz zu bestimmen
-könnten solche Pakete beispielsweise in schnellstmöglicher Abfolge geschickt werden, der Client kann anhand des ersten
+Um die Latenz zu bestimmen kann der Client ein Paket mit einem Timestamp sowie einer Prüfsumme für diesen Timestamp an
+den Server schicken, wenn gewünscht auch mehrfach um einen Durchschnitt zu errechnen. Um den Durchsatz zu bestimmen
+könnten solche Pakete beispielsweise in schnellstmöglicher Abfolge geschickt werden, der Server kann anhand des ersten
 Timestamps einen Zeitraum wählen in dem er auf Pakete hört und anschließend (anhand der Timestamps und Paketgröße)
 auswerten wie groß der Durchsatz ist.

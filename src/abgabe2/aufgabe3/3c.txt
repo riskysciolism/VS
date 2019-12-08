@@ -1,0 +1,12 @@
+-------------------------------------------------------
+Start der Messung: Sun Dec 08 22:50:14 CET 2019
+Ende der Messung: Sun Dec 08 22:50:26 CET 2019
+Netzwerk: Heimnetzwerk
+Art des Anschlusses: WLAN
+Größe der Nachricht: 30 Bytes
+Inhalt der Nachricht: java.time.Instant.now()
+Quality of service: 2
+Broker: tcp://mqtt.eclipse.org:1883
+Durchschnittliche Empfangsdauer: 388.4ms
+Standardabweichung: 24.2771039825136ms
+-------------------------------------------------------

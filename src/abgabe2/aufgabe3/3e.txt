@@ -1,0 +1,12 @@
+-------------------------------------------------------
+Start der Messung: Sun Dec 08 22:52:48 CET 2019
+Ende der Messung: Sun Dec 08 22:52:59 CET 2019
+Netzwerk: Heimnetzwerk
+Art des Anschlusses: WLAN
+Größe der Nachricht: 30 Bytes
+Inhalt der Nachricht: java.time.Instant.now()
+Quality of service: 2
+Broker: tcp://broker.hivemq.com:1883
+Durchschnittliche Empfangsdauer: 45.2ms
+Standardabweichung: 16.982343772283023ms
+-------------------------------------------------------

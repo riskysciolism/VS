@@ -42,7 +42,7 @@ public class JmsReceiver implements MessageListener{
 
     public static void main(String[] args) {
         try {
-            JmsReceiver receiver = new JmsReceiver("1");
+            JmsReceiver receiver = new JmsReceiver("2");
         } catch (NamingException | JMSException e) {
             e.printStackTrace();
         }

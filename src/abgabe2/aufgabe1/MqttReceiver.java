@@ -18,7 +18,7 @@ public class MqttReceiver {
             }
         });
         client.connect();
-        client.subscribe("baboChannel");
+        client.subscribe("JmsToMqtt");
     }
 
     public static void main(String[] args) {

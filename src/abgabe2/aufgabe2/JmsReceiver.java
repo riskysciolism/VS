@@ -35,6 +35,8 @@ public class JmsReceiver implements MessageListener{
             } catch (JMSException e) {
                 System.err.println(e);
             }
+        } else {
+            System.out.println(message);
         }
     }
 
@@ -44,9 +46,7 @@ public class JmsReceiver implements MessageListener{
         } catch (NamingException | JMSException e) {
             e.printStackTrace();
         }
-        while(true) {
-
-        }
+        while(true) {}
     }
 
 }

@@ -28,6 +28,5 @@ public class MqttReceiver {
             e.printStackTrace();
         }
         while (true){}
-
     }
 }

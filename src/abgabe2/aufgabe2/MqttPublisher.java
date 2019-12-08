@@ -11,15 +11,17 @@ public class MqttPublisher {
     }
 
     void publish() throws MqttException {
-        this.client.connect();
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setWill("MqttToJms", "LWT Message".getBytes(), 2, true);
+        this.client.connect(options);
         MqttMessage message = new MqttMessage();
 
         while(true) {
             System.out.println("Sending message..");
             message.setPayload(new Date().toString().getBytes());
-            this.client.publish("baboChannel", message);
+            this.client.publish("MqttToJms", message);
             try {
-                Thread.sleep(100);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
